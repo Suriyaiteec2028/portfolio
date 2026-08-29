@@ -1,0 +1,139 @@
+/* ==========================================================================
+   RESPONSIVE DESIGN STYLESHEET
+   ========================================================================== */
+
+/* Medium Screens (Tablets & Below: <= 992px) */
+@media screen and (max-width: 992px) {
+    .hero-content {
+        flex-direction: column-reverse;
+        text-align: center;
+        gap: 50px;
+    }
+
+    .hero-text {
+        max-width: 100%;
+    }
+
+    .name3d {
+        font-size: 52px;
+    }
+
+    .hero-buttons,
+    .social-icons {
+        justify-content: center;
+    }
+
+    .about-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-image-circle {
+        width: 280px;
+        height: 280px;
+        margin: 0 auto;
+    }
+
+    .contact-container {
+        grid-template-columns: 1fr;
+        padding: 35px 25px;
+    }
+}
+
+/* Mobile Screens (<= 768px) */
+@media screen and (max-width: 768px) {
+    section {
+        padding: 80px 5%;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--bg-header);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        transition: left 0.4s ease;
+        border-top: 1px solid var(--border-glass);
+    }
+
+    .nav-links.show {
+        left: 0;
+    }
+
+    .nav-links a {
+        font-size: 20px;
+    }
+
+    .name3d {
+        font-size: 40px;
+    }
+
+    .hero-text h2 {
+        font-size: 24px;
+    }
+
+    .image-circle {
+        width: 260px;
+        height: 260px;
+    }
+
+    .section-title h2 {
+        font-size: 32px;
+    }
+
+    .skills-container,
+    .projects-container,
+    .certificate-container {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-container {
+        padding: 30px 20px;
+    }
+
+    .info-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .back-to-top {
+        bottom: 25px;
+        right: 25px;
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+    }
+}
+
+/* Small Phones (<= 480px) */
+@media screen and (max-width: 480px) {
+    .name3d {
+        font-size: 32px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .image-circle {
+        width: 220px;
+        height: 220px;
+    }
+}
