@@ -1,0 +1,250 @@
+{
+  "geofence": {
+    "projectId": "geofence",
+    "projectName": "Geofence & Biometric Attendance System",
+    "tagline": "SaaS Healthcare Attendance System with GPS Boundary Verification & Biometrics",
+    "description": "An end-to-end hospital staff attendance verification system combining HTML5 Geolocation API, Leaflet map ray-casting, biometric face scanning, and real-time backend verification.",
+    "steps": [
+      {
+        "stepId": "step-1",
+        "title": "GPS Coordinates Acquisition",
+        "description": "The client browser requests device location permission using the HTML5 Geolocation API to capture precise latitude, longitude, and accuracy radius.",
+        "input": "User Geolocation Permission & Device GPS Sensors",
+        "process": "Acquires high-accuracy coordinates (lat, lng, accuracy) via navigator.geolocation.getCurrentPosition() with timeout safeguards.",
+        "technology": "HTML5 Geolocation API, JavaScript ES6+",
+        "output": "Raw Geolocation Payload: { lat: 13.0324, lng: 80.1782, accuracy: 5m }",
+        "nextStep": "step-2",
+        "type": "input",
+        "icon": "fa-location-dot"
+      },
+      {
+        "stepId": "step-2",
+        "title": "Geofence Boundary Validation",
+        "description": "Evaluates user location against designated hospital polygon boundaries using spatial ray-casting algorithms and Leaflet.js bounds.",
+        "input": "Raw GPS Payload & Hospital Perimeter Polygon Vertices",
+        "process": "Calculates point-in-polygon spatial inclusion and verifies distance radius is within the allowed 50-meter threshold.",
+        "technology": "Leaflet.js, OpenStreetMap, Spatial Ray-Casting Math",
+        "output": "Geofence Status: { insideZone: true, zoneName: 'City General Hospital', distance: '12m' }",
+        "nextStep": "step-3",
+        "type": "processing",
+        "icon": "fa-draw-polygon"
+      },
+      {
+        "stepId": "step-3",
+        "title": "Biometric Identification & Verification",
+        "description": "Captures staff biometric data or face landmark embeddings via device camera / WebAuthn API to prevent proxy attendance.",
+        "input": "Camera Feed Stream / WebAuthn Credential",
+        "process": "Extracts facial landmark vectors or WebAuthn cryptographic signature and computes similarity confidence score (>98%).",
+        "technology": "WebAuthn API, MediaDevices Stream, HTML5 Canvas",
+        "output": "Biometric Token: { verified: true, confidence: 99.4%, staffId: 'EMP-4089' }",
+        "nextStep": "step-4",
+        "type": "security",
+        "icon": "fa-fingerprint"
+      },
+      {
+        "stepId": "step-4",
+        "title": "Backend REST API Validation",
+        "description": "Sends encrypted JSON payload to Express backend for JWT token validation, anti-spoofing checks, and shift schedule verification.",
+        "input": "HTTPS POST Payload (JWT, Geofence Token, Biometric Hash, Timestamp)",
+        "process": "Decodes Bearer JWT, validates request timestamp against replay attacks, and checks employee shift roster.",
+        "technology": "Node.js, Express.js, JSON Web Tokens (JWT)",
+        "output": "Validated Attendance Payload ready for database insertion",
+        "nextStep": "step-5",
+        "type": "backend",
+        "icon": "fa-server"
+      },
+      {
+        "stepId": "step-5",
+        "title": "Database Audit Logging",
+        "description": "Persists immutable attendance check-in/out records into database with audit trail metadata and spatial location tags.",
+        "input": "Validated Attendance Payload & Audit Headers",
+        "process": "Executes transactional database insert with automatic indexing on staff ID, shift date, and geo-coordinates.",
+        "technology": "MongoDB / PostgreSQL, Mongoose ORM",
+        "output": "Inserted Record ID: #ATT-982341 (Status: Approved)",
+        "nextStep": "step-6",
+        "type": "database",
+        "icon": "fa-database"
+      },
+      {
+        "stepId": "step-6",
+        "title": "Real-Time Dashboard & Notification Sync",
+        "description": "Broadcasts live attendance updates to hospital department head dashboards and notifies employee via UI toast feedback.",
+        "input": "Attendance Success Event Trigger",
+        "process": "Pushes real-time WebSocket event to admin live monitoring panel and returns HTTP 200 JSON status to client UI.",
+        "technology": "WebSockets / Socket.io, Tailwind CSS UI",
+        "output": "Live Dashboard Update & User Check-in Confirmation Screen",
+        "nextStep": null,
+        "type": "output",
+        "icon": "fa-desktop"
+      }
+    ]
+  },
+  "expense-tracker": {
+    "projectId": "expense-tracker",
+    "projectName": "Expense Tracker",
+    "tagline": "Full Stack Financial Management & Analytics Application",
+    "description": "A comprehensive transaction tracking platform with user authentication, category budget tracking, dynamic chart analytics, and CSV export.",
+    "steps": [
+      {
+        "stepId": "step-1",
+        "title": "User Transaction Entry",
+        "description": "User submits transaction details (title, amount, expense/income category, date, payment method) via the responsive web form.",
+        "input": "Form Inputs: Title, Amount ($), Category, Type, Date",
+        "process": "Performs client-side validation to ensure non-negative values and correct date formatting.",
+        "technology": "HTML5 Forms, JavaScript ES6 Validation",
+        "output": "Sanitized Transaction Input Object",
+        "nextStep": "step-2",
+        "type": "input",
+        "icon": "fa-pen-to-square"
+      },
+      {
+        "stepId": "step-2",
+        "title": "State & Budget Calculation",
+        "description": "Updates in-memory state and recalculates remaining category budgets and overall net balance.",
+        "input": "Sanitized Transaction Input Object & Current State",
+        "process": "Computes total income, total expenses, net balance, and flags any exceeded category budget limits.",
+        "technology": "JavaScript State Manager / Redux Pattern",
+        "output": "Updated State Object & Budget Warning Flag (if applicable)",
+        "nextStep": "step-3",
+        "type": "processing",
+        "icon": "fa-calculator"
+      },
+      {
+        "stepId": "step-3",
+        "title": "REST API Transaction Dispatch",
+        "description": "Transmits transaction payload to backend REST server via AJAX fetch call with authorization headers.",
+        "input": "JSON Payload: { title, amount, category, type, date }",
+        "process": "Express router receives POST /api/transactions, verifies session authentication token.",
+        "technology": "Node.js, Express.js, Fetch API",
+        "output": "HTTP Server Request Received",
+        "nextStep": "step-4",
+        "type": "backend",
+        "icon": "fa-network-wired"
+      },
+      {
+        "stepId": "step-4",
+        "title": "Relational Database Storage",
+        "description": "Executes SQL query to safely insert transaction record into MySQL database table using parameterized queries.",
+        "input": "SQL Insert Params: (user_id, title, amount, category_id, created_at)",
+        "process": "Runs INSERT INTO transactions query with transaction isolation to prevent race conditions.",
+        "technology": "MySQL Database, SQL Prepared Statements",
+        "output": "Database Row Created (ID: 1042)",
+        "nextStep": "step-5",
+        "type": "database",
+        "icon": "fa-database"
+      },
+      {
+        "stepId": "step-5",
+        "title": "Analytics & Chart Visualization",
+        "description": "Re-renders dynamic financial analytics charts showing category percentage breakdowns and monthly trends.",
+        "input": "Aggregated Database Totals & Monthly Summary Data",
+        "process": "Updates canvas-rendered pie charts, bar graphs, and transaction history table with smooth animations.",
+        "technology": "Chart.js, HTML5 Canvas, Dynamic CSS",
+        "output": "Interactive Analytics Dashboard & Updated History List",
+        "nextStep": null,
+        "type": "output",
+        "icon": "fa-chart-pie"
+      }
+    ]
+  },
+  "developer-portfolio": {
+    "projectId": "developer-portfolio",
+    "projectName": "Developer Portfolio",
+    "tagline": "Modern Responsive Portfolio with Glassmorphism & Interactive Workflow Visualizer",
+    "description": "A high-performance personal portfolio showcasing full-stack projects, interactive SVG workflow diagrams, dynamic theme toggling, and background particle animation.",
+    "steps": [
+      {
+        "stepId": "step-1",
+        "title": "Static & API Route Request",
+        "description": "Visitor navigates to portfolio website. Node.js Express server receives HTTP GET request for index.html or API endpoints.",
+        "input": "HTTP GET / Request from Client Browser",
+        "process": "Serves index.html with cache headers, Gzip compression, and REST API routing support.",
+        "technology": "Node.js, Express Static Middleware",
+        "output": "HTML Webpage Document & Static Assets",
+        "nextStep": "step-2",
+        "type": "input",
+        "icon": "fa-globe"
+      },
+      {
+        "stepId": "step-2",
+        "title": "Particle Canvas & Theme Initialization",
+        "description": "Initializes interactive HTML5 background particle canvas and checks saved user theme preference (Dark/Light mode).",
+        "input": "Local Storage Theme Key & Window Dimensions",
+        "process": "Sets data-theme attribute on <html> element and spawns canvas particle nodes with mouse collision math.",
+        "technology": "HTML5 Canvas API, JavaScript ES6, LocalStorage",
+        "output": "Interactive Canvas Background & Theme Applied",
+        "nextStep": "step-3",
+        "type": "processing",
+        "icon": "fa-wand-magic-sparkles"
+      },
+      {
+        "stepId": "step-3",
+        "title": "Dynamic Workflow API Request",
+        "description": "When visitor clicks 'View Workflow' on any project card, JS triggers fetch request to backend workflow REST endpoint.",
+        "input": "Project ID Parameter (e.g., 'geofence', 'expense-tracker')",
+        "process": "Executes asynchronous GET request to /api/projects/:projectId/workflow.",
+        "technology": "Fetch API, REST API Architecture",
+        "output": "JSON Workflow Data Payload",
+        "nextStep": "step-4",
+        "type": "backend",
+        "icon": "fa-diagram-project"
+      },
+      {
+        "stepId": "step-4",
+        "title": "Interactive Diagram & Modal Engine",
+        "description": "Parses JSON workflow steps, renders SVG connecting flow paths, interactive node cards, and attaches zoom/pan controls.",
+        "input": "JSON Workflow Data Payload",
+        "process": "Generates dynamic DOM elements, computes node SVG positions, and sets up click event listeners for step detail inspector.",
+        "technology": "Vanilla JS DOM Engine, SVG Rendering, CSS Glassmorphism",
+        "output": "Interactive Workflow Diagram Modal & Step Details Drawer",
+        "nextStep": null,
+        "type": "output",
+        "icon": "fa-window-maximize"
+      }
+    ]
+  },
+  "weather-app": {
+    "projectId": "weather-app",
+    "projectName": "Weather App",
+    "tagline": "Real-Time Weather Forecast & Metrics Application",
+    "description": "Fetches live weather, temperature forecasts, humidity metrics, and atmospheric conditions from OpenWeather API.",
+    "steps": [
+      {
+        "stepId": "step-1",
+        "title": "Location Input / Geolocation",
+        "description": "User searches for a city name or clicks the current location button.",
+        "input": "Search Query String (e.g. 'Chennai') or GPS Coordinates",
+        "process": "Sanitizes search query and encodes URI parameters for weather service request.",
+        "technology": "HTML5 Search Input, Geolocation API",
+        "output": "Encoded Search Parameters",
+        "nextStep": "step-2",
+        "type": "input",
+        "icon": "fa-magnifying-glass"
+      },
+      {
+        "stepId": "step-2",
+        "title": "OpenWeather REST API Call",
+        "description": "Dispatches asynchronous fetch request to OpenWeather API endpoint with API key and metric units.",
+        "input": "API Request: api.openweathermap.org/data/2.5/weather?q=Chennai&units=metric",
+        "process": "Fetches current weather JSON payload including temperature, humidity, wind speed, and weather icon code.",
+        "technology": "OpenWeather API, Async/Await Fetch",
+        "output": "Weather Data JSON Object",
+        "nextStep": "step-3",
+        "type": "backend",
+        "icon": "fa-cloud-sun"
+      },
+      {
+        "stepId": "step-3",
+        "title": "Data Processing & Dynamic UI Render",
+        "description": "Normalizes metrics, formats date/time, and updates DOM elements with dynamic weather icons and background gradients.",
+        "input": "Weather Data JSON Object",
+        "process": "Updates temperature display, humidity gauge, wind speed metrics, and updates weather card background theme.",
+        "technology": "JavaScript DOM Manipulation, CSS CSS Variables",
+        "output": "Live Weather Metrics & Animated UI Display",
+        "nextStep": null,
+        "type": "output",
+        "icon": "fa-temperature-high"
+      }
+    ]
+  }
+}
